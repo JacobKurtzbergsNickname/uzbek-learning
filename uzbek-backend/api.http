@@ -1,0 +1,31 @@
+#### GET root
+GET http://localhost:3421/
+
+#### GET words
+GET http://localhost:3421/words HTTP/1.1
+
+#### GET words/:id
+GET http://localhost:3421/words/c0f4cd99-2a3b-46e2-991e-55010c5b17b8 HTTP/1.1
+
+#### POST words
+POST http://localhost:3421/words HTTP/1.1
+content-type: application/json
+
+{
+    "word": "Salom",
+    "translation": "Hello",
+    "partOfSpeech": "noun"
+}
+
+#### PUT words/:id
+PUT http://localhost:3421/words/c0f4cd99-2a3b-46e2-991e-55010c5b17b8 HTTP/1.1
+content-type: application/json
+
+{
+    "word": "Salom",
+    "translation": "Hi",
+    "partOfSpeech": "noun"
+}
+
+#### DELETE words/:id
+DELETE http://localhost:3421/words/c0f4cd99-2a3b-46e2-991e-55010c5b17b8 HTTP/1.1
