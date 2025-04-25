@@ -7,7 +7,10 @@ import
         Request as Q, 
         Response as A 
 } from "express";
-import { UpdateResult } from "mongodb";
+import { InsertOneResult, UpdateResult } from "mongodb";
+import { sendCreatedResponse, sendDeletedResponse, sendRestoredResponse, sendUpdatedResponse } from "../utils/response-utils";
+
+type Result = UpdateResult<Document> | InsertOneResult<Document>;
 
 // Router setup
 const wordRoutes = express.Router();
@@ -65,7 +68,7 @@ async function POST(req: Q, res: A) {
             // If the word is marked as deleted, restore it
             restoreWord(changedWord)
                 .then(result => {
-                    sendRestoredResponse(res, existingWord, result);
+                    sendRestoredResponse(res, changedWord, result);
                 }).catch(err => {
                     console.error("Error restoring word:", err);
                     res.status(500).json({ message: "Word could not be restored" });
@@ -76,12 +79,8 @@ async function POST(req: Q, res: A) {
         return;
     }
     const result = await wordsCollection.insertOne(newWord);
-    res
-        .status(201)
-        .json({
-            message: result.acknowledged ? "Word added" : "Word not added",
-            word: newWord,
-        });
+    sendCreatedResponse(res, newWord, result);
+    return;
 }
 
 async function PUT(req: Q, res: A) {
@@ -107,11 +106,20 @@ async function PUT(req: Q, res: A) {
         return;
     }
     // Update the word in the database
-    const updatedWord = await wordsCollection.updateOne(
+    const updatedAt = new Date();
+    const result = await wordsCollection.updateOne(
         { id: id },
-        { $set: { word, translation, partOfSpeech } }
+        { $set: { word, translation, partOfSpeech, updatedAt } }
     );
-    sendUpdatedResponse(res, existingWord, updatedWord);
+    // Compose the updated word object
+    const updatedWord: IWord = {
+        ...existingWord,
+        word: word,
+        translation: translation,
+        partOfSpeech: partOfSpeech,
+        updatedAt: updatedAt,
+    };
+    sendUpdatedResponse(res, updatedWord, result);
     return;
 }
 
@@ -129,14 +137,20 @@ async function DELETE(req: Q, res: A) {
         res.status(409).json({ message: "Word does not exist" });
         return;
     }
-    
+
+    // Set the deletedAt field to mark the word as deleted
+    const deletedAt = new Date();
     const result = await wordsCollection.updateOne(
         { id: id }, 
-        { $set: { deletedAt: new Date() } }
+        { $set: { deletedAt } }
     )
 
-    // If the word is marked as deleted, restore it
-    sendDeletedResponse(res, existingWord, result);
+    // Send the response with the deleted word object
+    const deletedWord: IWord = {
+        ...existingWord,
+        deletedAt: deletedAt,
+    };
+    sendDeletedResponse(res, deletedWord, result);
     return;
 }
 
@@ -153,44 +167,4 @@ async function restoreWord(word: IWord):Promise<UpdateResult<Document>> {
             deletedAt: null,
         }}
     );
-}
-
-function sendRestoredResponse(res: A, word: IWord, result: UpdateResult<Document>): void {
-    // If MongoDB operation is not acknowledged, send a 500 response
-    if (!result.acknowledged) {
-        res.status(500).json({ message: "Word could not be restored" });
-        return;
-    }
-    // Otherwise, send a 200 response
-    res.status(200).json({ message: "Word restored", word: word });
-}
-
-function sendDeletedResponse(res: A, word: IWord, result: UpdateResult<Document>): void {
-    // If MongoDB operation is not acknowledged, send a 500 response
-    if (!result.acknowledged) {
-        res.status(500).json({ message: "Word could not be restored" });
-        return;
-    }
-    // Otherwise, send a 200 response
-    res.status(200).json({ message: "Word restored", word: word });
-}
-
-function sendCreatedResponse(res: A, word: IWord, result: UpdateResult<Document>): void {
-    // If MongoDB operation is not acknowledged, send a 500 response
-    if (!result.acknowledged) {
-        res.status(500).json({ message: "Word could not be created" });
-        return;
-    }
-    // Otherwise, send a 200 response
-    res.status(201).json({ message: "Word created", word: word });
-}
-
-function sendUpdatedResponse(res: A, word: IWord, result: UpdateResult<Document>): void {
-    // If MongoDB operation is not acknowledged, send a 500 response
-    if (!result.acknowledged) {
-        res.status(500).json({ message: "Word could not be updated" });
-        return;
-    }
-    // Otherwise, send a 200 response
-    res.status(200).json({ message: "Word updated", word: word });
 }
