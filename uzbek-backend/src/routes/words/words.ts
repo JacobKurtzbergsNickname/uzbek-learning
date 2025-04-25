@@ -7,10 +7,7 @@ import
         Request as Q, 
         Response as A 
 } from "express";
-import { InsertOneResult, UpdateResult } from "mongodb";
-import { sendCreatedResponse, sendDeletedResponse, sendRestoredResponse, sendUpdatedResponse } from "../utils/response-utils";
-
-type Result = UpdateResult<Document> | InsertOneResult<Document>;
+import { Result, sendCreatedResponse, sendDeletedResponse, sendRestoredResponse, sendUpdatedResponse } from "../utils/response-utils";
 
 // Router setup
 const wordRoutes = express.Router();
@@ -154,7 +151,7 @@ async function DELETE(req: Q, res: A) {
     return;
 }
 
-async function restoreWord(word: IWord):Promise<UpdateResult<Document>> {
+async function restoreWord(word: IWord):Promise<Result> {
     // If the word is marked as deleted, restore it
     return await wordsCollection.updateOne(
         { id: word.id },

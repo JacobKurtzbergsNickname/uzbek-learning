@@ -2,7 +2,7 @@ import { IWord } from "@/models/word";
 import { Response } from "express";
 import { InsertOneResult, UpdateResult } from "mongodb";
 
-type Result = UpdateResult<Document> | InsertOneResult<Document>;
+export type Result = UpdateResult<Document> | InsertOneResult<Document>;
 
 function sendResponse(res: Response, word: IWord, result: Result, verb: string): void {
     // If MongoDB operation is not acknowledged, send a 500 response
