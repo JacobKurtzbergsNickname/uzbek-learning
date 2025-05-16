@@ -6,6 +6,7 @@ import _ from "lodash";
 import { AnswerOption } from "./AnswerOption";
 import { composeTestableWords } from "@/utils/typescript-chainable-functions";
 import { AnswerOptionDTO } from "@/types";
+import { WordUtils } from "@/utils/dynamic-chainable-functions";
 
 // type AnswerOptionDTO = {
 //     word: string;
@@ -32,6 +33,8 @@ export function VocabularyTest( {correctWord} :VocabTestProps):JSX.Element {
     )
 
     const testableWords = composeTestableWords(correctWord, wrongWords).toAnswerOptions();
+
+    WordUtils.composeTestableWords(correctWord, wrongWords)
 
     const check = (e: ClickEvent) => {
         console.log()
