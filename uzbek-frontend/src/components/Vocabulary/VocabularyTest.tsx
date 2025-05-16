@@ -3,6 +3,15 @@ import { useContext } from "react";
 import { JSX } from "react/jsx-runtime";
 import { VocabularyContext } from "./VocabularyContext";
 import _ from "lodash";
+import { AnswerOption } from "./AnswerOption";
+import { composeTestableWords } from "@/utils/typescript-chainable-functions";
+import { AnswerOptionDTO } from "@/types";
+
+// type AnswerOptionDTO = {
+//     word: string;
+//     isCorrect: boolean;
+//     isSelected: boolean;
+// }
 
 interface VocabTestProps {
     correctWord?: WordDAO;
@@ -22,10 +31,7 @@ export function VocabularyTest( {correctWord} :VocabTestProps):JSX.Element {
         2
     )
 
-    const testableWords = [
-        correctWord.word, 
-        ...wrongWords.map((w: WordDAO) => w.word)
-    ];
+    const testableWords = composeTestableWords(correctWord, wrongWords).toAnswerOptions();
 
     const check = (e: ClickEvent) => {
         console.log()
@@ -41,14 +47,13 @@ export function VocabularyTest( {correctWord} :VocabTestProps):JSX.Element {
     return (
         <div>
             <p style={{justifySelf: "center"}}>{correctWord.translation}</p>
-            {testableWords.map((w: string, index: number) => {
+            {testableWords.map((w: AnswerOptionDTO, index: number) => {
                 return (
-                    <button 
-                        key={index} 
-                        className="btn btn-primary m-2" 
-                        onClick={(w) => check(w)}>
-                        {w}
-                    </button>
+                    <AnswerOption 
+                        answer={w}
+                        index={index}
+                        check={check} 
+                    />
                 )
             })}
         </div>
