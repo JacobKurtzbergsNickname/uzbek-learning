@@ -4,9 +4,7 @@ import { VocabularyTest } from "./VocabularyTest";
 import { VocabularyContext } from "./VocabularyContext";
 import { WordDAO } from "@/types/Word";
 
-
 export function VocabularyStepper(): JSX.Element {
-
     const [currentWord, setCurrentWord] = useState<WordDAO>();
     const { words } = useContext(VocabularyContext)
 
