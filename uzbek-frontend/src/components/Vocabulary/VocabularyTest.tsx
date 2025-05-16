@@ -6,6 +6,7 @@ import _ from "lodash";
 import { AnswerOption } from "./AnswerOption";
 import { AnswerOptionDTO } from "@/types";
 import { WordUtils } from "../../utils/word-utilities";
+import { Translation } from "./Translation";
 
 interface VocabTestProps {
     correctWord?: WordDAO;
@@ -84,8 +85,8 @@ export function VocabularyTest( {correctWord} :VocabTestProps):JSX.Element {
     }
 
     return (
-        <div>
-            <p style={{justifySelf: "center"}}>{correctWord.translation}</p>
+        <section>
+            <Translation>{correctWord.translation}</Translation>
             {answerOptions.map((w: AnswerOptionDTO, index: number) => {
                 return (
                     <AnswerOption 
@@ -96,6 +97,6 @@ export function VocabularyTest( {correctWord} :VocabTestProps):JSX.Element {
                     />
                 )
             })}
-        </div>
+        </section>
     )
 }

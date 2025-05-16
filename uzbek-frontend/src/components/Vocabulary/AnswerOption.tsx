@@ -43,7 +43,7 @@ function AnswerOption({answer, index, check }: AnswerOptionProps): JSX.Element {
     return (
         <button 
             key={index} 
-            className={`btn btn-primary ${marked}`}
+            className={`btn btn-primary ${marked} m-2`}
             onClick={handleClick}>
             {answer.word}
         </button>
