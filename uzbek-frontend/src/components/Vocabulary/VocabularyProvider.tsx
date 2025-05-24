@@ -1,6 +1,7 @@
 import { useLocalStorage } from "../../data/useLocalStorage";
-import { Words } from "@/types/Word";
+import { newWord, Word, Words } from "../../types/Word";
 import { VocabularyContext } from "./VocabularyContext";
+import { useState } from "react";
 
 type ProviderProperties = {
     children: React.ReactNode
@@ -16,9 +17,17 @@ const localWords: Words = [
 export const VocabularyProvider: React.FC<ProviderProperties> = ({ children }) => {
 
     const words: Words = useLocalStorage<Words>("words", localWords)[0];
+    const [correctWord, setCorrectWord] = useState<Word>(newWord());
+    const [isAnswerSelected, setIsAnswerSelected] = useState<boolean>(false);
   
     return (
-        <VocabularyContext.Provider value={{words}}>
+        <VocabularyContext.Provider value={{
+            words,
+            correctWord,
+            setCorrectWord,
+            isAnswerSelected,
+            setIsAnswerSelected
+        }}>
                 {children}
         </VocabularyContext.Provider>
     )

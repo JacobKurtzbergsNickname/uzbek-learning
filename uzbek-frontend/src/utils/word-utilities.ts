@@ -1,4 +1,4 @@
-import { WordDAO, AnswerOptionDTO } from "../types";
+import { Word, AnswerOptionDTO } from "../types";
 import { ChainableArray } from "./chainable-functions";
 
 /**
@@ -32,7 +32,7 @@ export class WordFunctionsArray<T> extends ChainableArray<T> {
 }
 
 interface IWordUtils {
-  composeTestableWords: (correctWord: WordDAO, wrongWords: WordDAO[]) => WordFunctionsArray<string>;
+  composeTestableWords: (correctWord: Word, wrongWords: Word[]) => WordFunctionsArray<string>;
   toAnswerOptions: (words: string[]) => AnswerOptionDTO[];
   shuffle: <T>(array: T[]) => T[];
 }
@@ -44,10 +44,10 @@ export const WordUtils: IWordUtils = {
   /**
    * Creates a chainable array of testable words from correct and wrong options
    */
-  composeTestableWords(correctWord: WordDAO, wrongWords: WordDAO[]): WordFunctionsArray<string> {
+  composeTestableWords(correctWord: Word, wrongWords: Word[]): WordFunctionsArray<string> {
     return new WordFunctionsArray<string>([
       correctWord.word,
-      ...wrongWords.map((w: WordDAO) => w.word)
+      ...wrongWords.map((w: Word) => w.word)
     ]);
   },
 

@@ -2,11 +2,11 @@ import { JSX, useContext, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { VocabularyTest } from "./VocabularyTest";
 import { VocabularyContext } from "./VocabularyContext";
-import { WordDAO } from "@/types/Word";
+import { Word } from "@/types/Word";
 
 export function VocabularyStepper(): JSX.Element {
-    const [currentWord, setCurrentWord] = useState<WordDAO>();
-    const { words } = useContext(VocabularyContext)
+    const [currentWord, setCurrentWord] = useState<Word>();
+    const { words, setIsAnswerSelected } = useContext(VocabularyContext)
 
     const defaultWord = words[0]?.word || "No words available";
 
@@ -14,6 +14,7 @@ export function VocabularyStepper(): JSX.Element {
         console.log("Selected word:", word);
         const selectedWord = words.find((w) => w.word === word);
         setCurrentWord(selectedWord);
+        setIsAnswerSelected(false);
     }
 
     return (

@@ -1,14 +1,23 @@
-type Word = WordDAO & {
+type WordDBO = Word & {
     createdAt: Date;
     updatedAt: Date;
 }
 
-type WordDAO = {
+type Word = {
     id: number;
     word: string;
     translation: string;
 }
 
-type Words = Array<WordDAO>;
+const newWord = (): Word => {
+    return {
+        id: 0,
+        word: "",
+        translation: ""
+    }
+}
 
-export type { Word, Words, WordDAO };
+type Words = Array<Word>;
+
+export type { WordDBO, Words, Word };
+export { newWord };

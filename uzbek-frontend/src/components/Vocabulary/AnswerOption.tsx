@@ -1,6 +1,7 @@
 import { AnswerOptionDTO } from "@/types";
-import { JSX, useState } from "react";
+import { JSX, useContext, useMemo, useState } from "react";
 import { useEffect } from "react";
+import { VocabularyContext } from "./VocabularyContext";
 
 interface AnswerOptionProps {
     answer: AnswerOptionDTO;
@@ -20,7 +21,17 @@ function assignMarkup(answer: AnswerOptionDTO): string {
 
 function AnswerOption({answer, index, check }: AnswerOptionProps): JSX.Element {
 
+    const {correctWord, isAnswerSelected} = useContext(VocabularyContext);
     const [marked, setMarked] = useState("");
+
+    const secondary = useMemo(() => {
+        if (isAnswerSelected){
+            if (!answer.isSelected && answer.word == correctWord.word) {
+                return "!bg-yellow-600";
+            }
+        }
+        return "";
+    }, [answer.isSelected, correctWord, isAnswerSelected]);
 
     useEffect(() => {
         console.groupCollapsed(`[AnswerOption] Rendered at index: ${index}`);
@@ -43,7 +54,7 @@ function AnswerOption({answer, index, check }: AnswerOptionProps): JSX.Element {
     return (
         <button 
             key={index} 
-            className={`btn btn-primary ${marked} m-2`}
+            className={`btn btn-primary ${marked} ${secondary} m-2`}
             onClick={handleClick}>
             {answer.word}
         </button>

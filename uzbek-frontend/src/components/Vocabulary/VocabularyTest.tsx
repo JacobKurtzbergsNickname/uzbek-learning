@@ -1,4 +1,4 @@
-import { WordDAO } from "@/types/Word";
+import { Word } from "@/types/Word";
 import { useContext, useEffect, useState, useMemo } from "react";
 import { JSX } from "react/jsx-runtime";
 import { VocabularyContext } from "./VocabularyContext";
@@ -9,18 +9,18 @@ import { WordUtils } from "../../utils/word-utilities";
 import { Translation } from "./Translation";
 
 interface VocabTestProps {
-    correctWord?: WordDAO;
+    correctWord?: Word;
 }
 
 function selectRandomWords(
-    words: WordDAO[], 
-    correctWord?: WordDAO
-): WordDAO[] {
+    words: Word[], 
+    correctWord?: Word
+): Word[] {
     if (!correctWord) {
         return []
     }
     
-    const wrongWords = words.filter((w: WordDAO) => {
+    const wrongWords = words.filter((w: Word) => {
         return w.word !== correctWord?.word
     })
     return _.sampleSize(wrongWords, 3)
@@ -57,13 +57,20 @@ function selectAnswer(
  */
 
 export function VocabularyTest( {correctWord} :VocabTestProps):JSX.Element {
-    const {words} = useContext(VocabularyContext)
+    const {words, setCorrectWord, setIsAnswerSelected} = useContext(VocabularyContext)
     const [answerOptions, setAnswerOptions] = useState<AnswerOptionDTO[]>([])
 
     const wrongWords = useMemo(
         () => selectRandomWords(words, correctWord),
         [words, correctWord]
     );
+
+    // Update the correct word in the context when it changes
+    useEffect(() => {
+        if (correctWord) {
+            setCorrectWord(correctWord);
+        }
+    }, [correctWord, setCorrectWord]);
 
     useEffect(() => {
         let testableWords: AnswerOptionDTO[] = []
@@ -82,6 +89,7 @@ export function VocabularyTest( {correctWord} :VocabTestProps):JSX.Element {
 
     const check = (answer: AnswerOptionDTO) => {
         setAnswerOptions(selectAnswer(answerOptions, answer))
+        setIsAnswerSelected(true);
     }
 
     return (
