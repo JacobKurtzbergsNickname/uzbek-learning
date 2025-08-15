@@ -3,10 +3,6 @@ import { IsString, MinLength } from "class-validator";
 export class CreateWordDto {
   @IsString()
   @MinLength(1)
-  text: string;
-
-  @IsString()
-  @MinLength(1)
   word: string;
 
   @IsString()

@@ -28,7 +28,9 @@ export class WordsController {
   @Post()
   create(@Body() dto: CreateWordDto) {
     return this.words.create({
-      text: dto.text,
+      word: dto.word,
+      translation: dto.translation,
+      partOfSpeech: dto.partOfSpeech,
       language: dto.language ?? "uz",
     });
   }

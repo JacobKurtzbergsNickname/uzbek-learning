@@ -9,7 +9,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (cs: ConfigService) => ({
-        uri: cs.get<string>("MONGO_URI")!, // points to LanguageApp
+        uri: cs.get<string>("MONGO_URI")!,
       }),
     }),
     WordsModule,
