@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { v4 as uuidv4 } from "uuid";
 
 export type WordDocument = Word & Document;
 
@@ -7,7 +8,7 @@ export type WordDocument = Word & Document;
   collection: "Words",
 })
 export class Word {
-  @Prop({ required: true, unique: true })
+  @Prop({ default: uuidv4, unique: true })
   id: string;
 
   @Prop({ required: true })
@@ -18,6 +19,9 @@ export class Word {
 
   @Prop({ required: true })
   partOfSpeech: string;
+
+  @Prop({ required: true })
+  language: string;
 
   @Prop({ default: Date.now })
   createdAt: Date;

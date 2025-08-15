@@ -15,8 +15,9 @@ export class WordsService {
     return this.wordModel.find(filter).lean().exec();
   }
 
+  // lookup by the custom `id` field instead of MongoDB _id
   async findOne(id: string): Promise<Word> {
-    const doc = await this.wordModel.findById(id).lean().exec();
+    const doc = await this.wordModel.findOne({ id }).lean().exec();
     if (!doc) throw new NotFoundException("Word not found");
     return doc as Word;
   }
@@ -26,8 +27,43 @@ export class WordsService {
     return created.save();
   }
 
+  // remove by custom `id` field
   async remove(id: string): Promise<{ deleted: boolean }> {
-    const result = await this.wordModel.deleteOne({ _id: id }).exec();
+    const result = await this.wordModel.deleteOne({ id }).exec();
     return { deleted: result.deletedCount === 1 };
+  }
+
+  // Patch: partial update (PATCH) by `id` field
+  async patch(id: string, dto: Partial<CreateWordDto>): Promise<Word> {
+    const update = Object.fromEntries(
+      Object.entries(dto).filter(([_, v]) => v !== undefined),
+    );
+
+    const updated = await this.wordModel
+      .findOneAndUpdate(
+        { id },
+        { $set: update },
+        { new: true, runValidators: true },
+      )
+      .lean()
+      .exec();
+
+    if (!updated) throw new NotFoundException("Word not found");
+    return updated as Word;
+  }
+
+  // Put: full replace (PUT) by `id` field
+  async put(id: string, dto: CreateWordDto): Promise<Word> {
+    const replaced = await this.wordModel
+      .findOneAndUpdate({ id }, dto, {
+        new: true,
+        overwrite: true,
+        runValidators: true,
+      })
+      .lean()
+      .exec();
+
+    if (!replaced) throw new NotFoundException("Word not found");
+    return replaced as Word;
   }
 }
