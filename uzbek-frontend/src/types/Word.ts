@@ -9,7 +9,7 @@ type Word = {
     translation: string;
 }
 
-const newWord = (): Word => {
+const emptyWord = (): Word => {
     return {
         id: 0,
         word: "",
@@ -20,4 +20,4 @@ const newWord = (): Word => {
 type Words = Array<Word>;
 
 export type { WordDBO, Words, Word };
-export { newWord };
+export { emptyWord };

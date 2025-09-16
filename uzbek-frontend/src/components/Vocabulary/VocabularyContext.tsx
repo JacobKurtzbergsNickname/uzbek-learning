@@ -1,4 +1,4 @@
-import { newWord, Word, Words } from "../../types/Word";
+import { emptyWord, Word, Words } from "../../types/Word";
 import { createContext, Dispatch, SetStateAction } from "react";
 
 // Define the initial state for the context
@@ -15,7 +15,7 @@ const initialVocabContext: VocabContextProperties = {
   words:       [],
 
   // Initialize with a new word object
-  correctWord: newWord(),
+  correctWord: emptyWord(),
 
   // Placeholder function, will be replaced by the provider
   setCorrectWord: () => {},

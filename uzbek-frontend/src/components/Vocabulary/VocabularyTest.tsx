@@ -95,16 +95,18 @@ export function VocabularyTest( {correctWord} :VocabTestProps):JSX.Element {
     return (
         <section>
             <Translation>{correctWord.translation}</Translation>
-            {answerOptions.map((w: AnswerOptionDTO, index: number) => {
-                return (
-                    <AnswerOption 
-                        answer={w}
-                        key={index}
-                        index={index}
-                        check={check} 
-                    />
-                )
-            })}
+            <section className="grid grid-cols-2 gap-4 my-4">
+                {answerOptions.map((w: AnswerOptionDTO, index: number) => {
+                    return (
+                        <AnswerOption
+                            answer={w}
+                            key={index}
+                            index={index}
+                            check={check}
+                        />
+                    )
+                })}
+            </section>
         </section>
     )
 }
