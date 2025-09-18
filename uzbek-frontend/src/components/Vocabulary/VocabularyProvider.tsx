@@ -1,3 +1,4 @@
+"use client";
 import { useLocalStorage } from "../../data/useLocalStorage";
 import { emptyWord, Word, Words } from "../../types/Word";
 import { VocabularyContext } from "./VocabularyContext";
@@ -26,12 +27,15 @@ export const VocabularyProvider: React.FC<ProviderProperties> = ({ children }) =
     const words: Words = 
         useLocalStorage<Words>("words", localWords)[0];
     const [correctWord, setCorrectWord] = useState<Word>(emptyWord());
+    const [current, setCurrent] = useState<number>(0);
     const [isAnswerSelected, setIsAnswerSelected] = useState<boolean>(false);
   
     return (
         <VocabularyContext.Provider value={{
             words,
             correctWord,
+            current,
+            setCurrent,
             setCorrectWord,
             isAnswerSelected,
             setIsAnswerSelected

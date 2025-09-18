@@ -1,3 +1,4 @@
+"use client";
 import { AnswerOptionDTO } from "@/types";
 import { JSX, useContext, useMemo, useState } from "react";
 import { useEffect } from "react";

@@ -1,8 +1,7 @@
-import Vocabulary from "./components/Vocabulary/Vocabulary";
+import Vocabulary from "@/components/Vocabulary/Vocabulary";
 
-function App() {
-
-  return (
+export default function Home() {
+    return (
     <>
       <h1 className="mb-10">Learning Uzbek</h1>
 
@@ -11,5 +10,3 @@ function App() {
     </>
   );
 }
-
-export default App;
