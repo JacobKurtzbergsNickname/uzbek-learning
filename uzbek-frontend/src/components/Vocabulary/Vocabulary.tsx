@@ -1,15 +1,18 @@
+"use client";
 import { JSX } from "react";
-import { VocabularyStepper } from "./VocabularyStepper";
+import TimedVocabularyTest from "./TimedVocabularyTest";
+import { VocabularyContext } from "./VocabularyContext";
 import { VocabularyProvider } from "./VocabularyProvider";
 
-
-
 function Vocabulary(): JSX.Element {
-
     return (
         <section>
             <VocabularyProvider>
-                <VocabularyStepper/>
+                <VocabularyContext.Consumer>
+                    {({ words }) => (
+                        <TimedVocabularyTest words={words} onComplete={() => {}} />
+                    )}
+                </VocabularyContext.Consumer>
             </VocabularyProvider>
         </section>
     )
