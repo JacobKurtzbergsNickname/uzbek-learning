@@ -1,8 +1,9 @@
 "use client";
 import { JSX } from "react";
-import TimedVocabularyTest from "./TimedVocabularyTest";
+// import TimedVocabularyTest from "./TimedVocabularyTest";
 import { VocabularyContext } from "./VocabularyContext";
 import { VocabularyProvider } from "./VocabularyProvider";
+import TimedVocabularyTest from "./TimedVocabularyTest";
 
 function Vocabulary(): JSX.Element {
     return (

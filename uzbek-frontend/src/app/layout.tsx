@@ -14,6 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/uzbekistan-flag.svg" type="image/svg+xml" />
+      </head>
       <body>
         <div id="root">
           {children}

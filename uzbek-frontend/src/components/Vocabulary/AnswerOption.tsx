@@ -12,14 +12,18 @@ interface AnswerOptionProps {
 }
 
 function assignMarkup(answer: AnswerOptionDTO, isAnswerSelected?: boolean, correctWord?: string, selectedWord?: string | null): string {
-    if (!isAnswerSelected) return "";
-    // Green: selected and correct
-    if (answer.isSelected && answer.isCorrect) return "!bg-green-600";
-    // Red: selected and wrong
-    if (answer.isSelected && !answer.isCorrect) return "!bg-red-600";
-    // Yellow: correct answer, but only if a wrong answer was selected
-    if (!answer.isSelected && answer.word === correctWord && selectedWord && selectedWord !== correctWord) return "!bg-yellow-600";
-    return "";
+        if (!isAnswerSelected) return "";
+        // Green: selected and correct
+        if (answer.isSelected && answer.isCorrect) return "!bg-green-600";
+        // Red: selected and wrong
+        if (answer.isSelected && !answer.isCorrect) return "!bg-red-600";
+        // Yellow: correct answer, if a wrong answer was selected or if no answer was selected (timeout)
+        if (
+            !answer.isSelected &&
+            answer.word === correctWord &&
+            ((selectedWord && selectedWord !== correctWord) || selectedWord === null)
+        ) return "!bg-yellow-600";
+        return "";
 }
 
 function AnswerOption({answer, index, check, isAnswerSelected, correctWord, selectedWord }: AnswerOptionProps): JSX.Element {

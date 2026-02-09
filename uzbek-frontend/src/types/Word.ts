@@ -1,21 +1,26 @@
+export type Result = {
+  word: Word;
+  selected: string | null;
+  correct: boolean;
+};
 type WordDBO = Word & {
-    createdAt: Date;
-    updatedAt: Date;
-}
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 type Word = {
-    id: number;
-    word: string;
-    translation: string;
-}
+  id: number;
+  word: string;
+  translation: string;
+};
 
 const emptyWord = (): Word => {
-    return {
-        id: 0,
-        word: "",
-        translation: ""
-    }
-}
+  return {
+    id: 0,
+    word: "",
+    translation: "",
+  };
+};
 
 type Words = Array<Word>;
 

@@ -35,6 +35,7 @@ interface IWordUtils {
   composeTestableWords: (correctWord: Word, wrongWords: Word[]) => WordFunctionsArray<string>;
   toAnswerOptions: (words: string[]) => AnswerOptionDTO[];
   shuffle: <T>(array: T[]) => T[];
+  generateTestOptions: (words: Word[], current: number) => AnswerOptionDTO[];
 }
 
 /**
@@ -72,6 +73,17 @@ export const WordUtils: IWordUtils = {
       [result[i], result[j]] = [result[j], result[i]];
     }
     return result;
+  },
+
+  generateTestOptions(words: Word[], current: number): AnswerOptionDTO[] {
+      const word = words[current];
+      if (!word) return [];
+      const wrongWords = words.filter((w) => w.word !== word.word);
+      const shuffledWrong = wrongWords.length > 3
+        ? [...wrongWords].sort(() => Math.random() - 0.5).slice(0, 3)
+        : wrongWords;
+      const options = [word, ...shuffledWrong].map((w) => w.word);
+      return WordUtils.toAnswerOptions(options).sort(() => Math.random() - 0.5);
   }
 };
 
