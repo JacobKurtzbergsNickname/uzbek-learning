@@ -1,2 +1,2 @@
-export * from "./Word";
+export * from "./PartsOfSpeech";
 export * from "./AnswerOption";

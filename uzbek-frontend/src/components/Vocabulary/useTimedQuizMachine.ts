@@ -1,5 +1,5 @@
 import { useReducer, useEffect, useRef } from "react";
-import { Word } from "../../types/Word";
+import { Word } from "../../types/PartsOfSpeech";
 import { AnswerOptionDTO } from "../../types/AnswerOption";
 import { WordUtils } from "../../utils/word-utilities";
 

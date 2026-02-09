@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { AnswerOption } from "./AnswerOption";
 import { Translation } from "./Translation";
 import { useTimedQuizMachine } from "./useTimedQuizMachine";
-import { Result, Word } from "../../types/Word";
+import { Result, Word } from "../../types/PartsOfSpeech";
 
 interface TimedVocabularyTestProps {
   words: Word[];
