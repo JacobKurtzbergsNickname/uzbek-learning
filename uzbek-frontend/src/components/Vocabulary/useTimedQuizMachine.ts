@@ -4,8 +4,23 @@ import { AnswerOptionDTO } from "../../types/AnswerOption";
 import { WordUtils } from "../../utils/word-utilities";
 
 // --- Types ---
+/**
+ * Phase of the quiz machine, representing the current step in the quiz flow.
+ * - 'question': User is answering the question.
+ * - 'showingAnswer': Correct answer is shown after user input or timeout.
+ * - 'finished': Quiz is complete.
+ */
 type Phase = "question" | "showingAnswer" | "finished";
 
+/**
+ * State structure for the quiz machine.
+ * @property current - Index of the current question.
+ * @property phase - Current phase of the quiz.
+ * @property timer - Seconds left for the current question.
+ * @property selected - User's selected answer (word), or null.
+ * @property answerOptions - Current answer options for the question.
+ * @property results - Array of results for each question.
+ */
 interface QuizState {
   current: number;
   phase: Phase;
@@ -15,6 +30,11 @@ interface QuizState {
   results: Array<{ word: Word; selected: string | null; correct: boolean }>;
 }
 
+/**
+ * Actions for quiz state management.
+ * @property type - Action type for state transition.
+ * @property answer - User's selected answer (for SELECT_ANSWER).
+ */
 type QuizAction =
   | { type: "START_QUESTION" }
   | { type: "TICK" }
@@ -25,10 +45,23 @@ type QuizAction =
   | { type: "FINISH" };
 
 // --- Helpers ---
+/**
+ * Generates answer options for the current question.
+ * @param words - Array of all quiz words.
+ * @param current - Index of the current question.
+ * @returns Array of answer options for the question.
+ */
 function generateOptions(words: Word[], current: number): AnswerOptionDTO[] {
   return WordUtils.generateTestOptions(words, current);
 }
 
+/**
+ * Marks answer options as correct/incorrect/selected based on user input or timeout.
+ * @param options - Array of answer options.
+ * @param correctWord - The correct answer word.
+ * @param selected - User's selected answer, or null for timeout.
+ * @returns Array of answer options with marking applied.
+ */
 function markAnswers(
   options: AnswerOptionDTO[],
   correctWord: string,
@@ -62,6 +95,13 @@ function markAnswers(
 }
 
 // --- Reducer ---
+/**
+ * Reducer function for quiz state transitions.
+ * Handles all quiz logic and state changes based on actions.
+ * @param state - Current quiz state.
+ * @param action - Action to transition state.
+ * @returns New quiz state after transition.
+ */
 function quizReducer(state: QuizState, action: QuizAction & { words: Word[] }): QuizState {
   const { words } = action;
   const word = words[state.current];
@@ -118,6 +158,12 @@ function quizReducer(state: QuizState, action: QuizAction & { words: Word[] }): 
 }
 
 // --- Custom Hook ---
+/**
+ * Custom hook for timed quiz state machine.
+ * Encapsulates reducer, orchestrating effect, and action dispatchers.
+ * @param words - Array of quiz words.
+ * @returns Quiz state, answer selection dispatcher, and restart dispatcher.
+ */
 export function useTimedQuizMachine(words: Word[]) {
   const initialState: QuizState = {
     current: 0,
@@ -132,19 +178,25 @@ export function useTimedQuizMachine(words: Word[]) {
 
   // Orchestrate timer and phase transitions
   useEffect(() => {
-    if (state.phase === "question") {
-      timerRef.current = setInterval(() => {
-        dispatch({ type: "TICK" });
-      }, 1000);
-    } else if (state.phase === "showingAnswer") {
-      if (timerRef.current) clearInterval(timerRef.current);
-      const linger = setTimeout(() => {
-        dispatch({ type: "NEXT_QUESTION" });
-      }, 800);
-      return () => clearTimeout(linger);
-    } else if (state.phase === "finished") {
-      if (timerRef.current) clearInterval(timerRef.current);
+    switch (state.phase) {
+      case "question":
+        timerRef.current = setInterval(() => {
+          dispatch({ type: "TICK" });
+        }, 1000);
+        break;
+      case "showingAnswer":
+        if (timerRef.current) clearInterval(timerRef.current);
+        const linger = setTimeout(() => {
+          dispatch({ type: "NEXT_QUESTION" });
+        }, 800);
+        return () => clearTimeout(linger);
+      case "finished":
+        if (timerRef.current) clearInterval(timerRef.current);
+        break;
+      default:
+        break;
     }
+    // Cleanup for timer interval
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };

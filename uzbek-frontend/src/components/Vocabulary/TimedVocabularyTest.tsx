@@ -10,7 +10,15 @@ interface TimedVocabularyTestProps {
   onComplete: (results: Array<Result>) => void;
 }
 
-const TimedVocabularyTest: React.FC<TimedVocabularyTestProps> = ({ words, onComplete }) => {
+/**
+ * This component manages a timed vocabulary quiz
+ * where users select the correct word based on its translation.
+ *
+ * @param words - Array of Word objects to be used in the quiz.
+ * @param onComplete - Callback function that receives the results when the quiz is finished.
+ * @returns JSX.Element representing the timed vocabulary test.
+ */
+function TimedVocabularyTest({ words, onComplete }: TimedVocabularyTestProps) {
   const { state, selectAnswer } = useTimedQuizMachine(words);
   const word = words[state.current];
 
@@ -47,6 +55,6 @@ const TimedVocabularyTest: React.FC<TimedVocabularyTestProps> = ({ words, onComp
       </div>
     </section>
   );
-};
+}
 
 export default TimedVocabularyTest;
