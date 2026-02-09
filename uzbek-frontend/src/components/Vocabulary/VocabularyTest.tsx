@@ -95,7 +95,7 @@ export function VocabularyTest( {correctWord} :VocabTestProps):JSX.Element {
     return (
         <section>
             <Translation>{correctWord.translation}</Translation>
-            <section className="grid grid-cols-2 gap-4 my-4">
+            <section className="grid grid-cols-2 gap-1 justify-center items-center w-fit mx-auto mt-8">
                 {answerOptions.map((w: AnswerOptionDTO, index: number) => {
                     return (
                         <AnswerOption

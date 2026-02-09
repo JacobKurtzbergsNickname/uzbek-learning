@@ -3,11 +3,11 @@ import { JSX, useContext, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { VocabularyTest } from "./VocabularyTest";
 import { VocabularyContext } from "./VocabularyContext";
-import { Word, Words } from "@/types/Word";
+import { Word } from "@/types/Word";
 
 export function VocabularyStepper(): JSX.Element {
     const [currentWord, setCurrentWord] = useState<Word>();
-    const { words, setIsAnswerSelected, current, setCurrent } = useContext(VocabularyContext);
+    const { words, setIsAnswerSelected } = useContext(VocabularyContext);
 
     function handleWordChange(word: string) {
         console.log("Selected word:", word);

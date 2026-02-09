@@ -1,0 +1,17 @@
+services:
+  mongo:
+    image: mongo:6
+    container_name: uzbek-mongo
+    ports:
+      - "27021:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: M3nCh494741Kh4n!
+      MONGO_INITDB_DATABASE: uzbek
+    command: ["--replSet", "rs0", "--keyFile", "/data/keyfile"]
+    volumes:
+      - mongo-data:/data/db
+      - ./mongo-keyfile:/data/keyfile:ro
+
+volumes:
+  mongo-data:
