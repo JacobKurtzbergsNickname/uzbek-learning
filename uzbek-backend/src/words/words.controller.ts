@@ -8,12 +8,15 @@ import {
   Query,
   Patch,
   Put,
+  UseGuards,
 } from "@nestjs/common";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { WordsService } from "./words.service";
 import { CreateWordDto } from "./dto/create-word.dto";
 import { QueryWordsDto } from "./dto/query-words.dto";
 import { UpdateWordDto } from "./dto/update-word.dto";
 
+@UseGuards(JwtAuthGuard)
 @Controller("words")
 export class WordsController {
   constructor(private readonly words: WordsService) {}

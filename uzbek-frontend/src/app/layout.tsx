@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { Auth0Provider } from "@auth0/nextjs-auth0/client";
 import "./globals.css";
-
 
 export const metadata: Metadata = {
   title: "Uzbek Learning App",
@@ -18,9 +18,9 @@ export default function RootLayout({
         <link rel="icon" href="/uzbekistan-flag.svg" type="image/svg+xml" />
       </head>
       <body>
-        <div id="root">
-          {children}
-        </div>
+        <Auth0Provider>
+          <div id="root">{children}</div>
+        </Auth0Provider>
       </body>
     </html>
   );
