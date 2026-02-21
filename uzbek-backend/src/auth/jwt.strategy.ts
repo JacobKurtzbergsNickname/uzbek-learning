@@ -10,6 +10,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const domain = configService.get<string>("AUTH0_DOMAIN");
     const audience = configService.get<string>("AUTH0_AUDIENCE");
 
+    if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.log("[Auth0] AUTH0_DOMAIN:", domain);
+      // eslint-disable-next-line no-console
+      console.log("[Auth0] AUTH0_AUDIENCE:", audience);
+    }
+
     if (!domain || !audience) {
       throw new Error(
         "Missing AUTH0_DOMAIN or AUTH0_AUDIENCE environment variables",
@@ -32,8 +39,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   validate(payload: Auth0JwtPayload) {
-    // Optionally, you can fetch or create a user in your DB here
+    // Debug: Log the decoded JWT payload
+    if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.log("[Auth0] JWT payload:", payload);
+    }
     if (!payload || !payload.sub) {
+      // eslint-disable-next-line no-console
+      console.log("[Auth0] Invalid payload or missing sub:", payload);
       throw new UnauthorizedException();
     }
     return {

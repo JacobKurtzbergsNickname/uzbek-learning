@@ -3,7 +3,6 @@ import { ConfigService } from "@nestjs/config";
 
 describe("JwtStrategy", () => {
   let strategy: JwtStrategy;
-  let strategy: JwtStrategy;
 
   const mockConfigService = {
     get: (key: string) => {
@@ -11,7 +10,7 @@ describe("JwtStrategy", () => {
       if (key === "AUTH0_AUDIENCE") return "test-audience";
       return undefined;
     },
-  } as unknown as ConfigService;
+  } as ConfigService;
 
   beforeEach(() => {
     strategy = new JwtStrategy(mockConfigService);
