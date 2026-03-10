@@ -1,5 +1,5 @@
 "use client";
-import { emptyWord, Word, Words } from "../../types/Word";
+import { emptyWord, Word, Words } from "../../types/PartsOfSpeech";
 import { createContext, Dispatch, SetStateAction } from "react";
 
 // Define the initial state for the context
@@ -15,7 +15,7 @@ export interface VocabContextProperties {
 
 const initialVocabContext: VocabContextProperties = {
   // Initialize with an empty array of words
-  words:       [],
+  words: [],
 
   // Initialize with a new word object
   correctWord: emptyWord(),
