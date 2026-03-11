@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import "tailwindcss";
+
 /* Auth0 UI styles */
 .app-container {
   display: flex;
@@ -233,13 +236,18 @@
     transform: scale(1);
   }
 }
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
-@import "tailwindcss";
 
 :root {
-  color-scheme: light dark;
-  --background: rgba(255, 255, 255, 0.87);
-  --foreground: #242424;
+  --background: #0d1118;
+  --foreground: #eaf0ff;
+  --surface: rgba(25, 32, 47, 0.78);
+  --surface-strong: #20293b;
+  --surface-border: rgba(131, 152, 187, 0.24);
+  --text-muted: rgba(232, 239, 255, 0.7);
+  --brand: #74c0fc;
+  --brand-strong: #5daff1;
+  --danger: #ff7a9b;
+  --danger-strong: #ef5d82;
 
   font-family: "Press Start 2P", cursive;
   line-height: 1.5;
@@ -253,41 +261,45 @@
 
 body {
   margin: 0;
-  display: flex;
-  justify-content: center;
-  min-width: 90vw;
+  min-width: 0;
   min-height: 100vh;
   background: var(--background);
   color: var(--foreground);
   font-family: "Press Start 2P", cursive;
+  background-image:
+    radial-gradient(
+      circle at 12% 18%,
+      rgba(116, 192, 252, 0.18),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 84% 80%,
+      rgba(127, 255, 212, 0.12),
+      transparent 30%
+    ),
+    linear-gradient(160deg, #0d1118 0%, #111725 45%, #121a2c 100%);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground: rgba(255, 255, 255, 0.87);
-    --background: #242424;
-  }
+#root {
+  width: 100%;
 }
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--brand);
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #535bf2;
+  color: var(--brand-strong);
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: clamp(2rem, 6vw, 3.3rem);
   line-height: 1.1;
 }
 
@@ -309,7 +321,7 @@ button {
 }
 
 button:hover {
-  border-color: #646cff;
+  border-color: var(--brand);
 }
 
 button:focus,
@@ -317,15 +329,322 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* ─── Navbar ─────────────────────────────────────────────── */
+.navbar {
+  position: sticky;
+  top: 0.9rem;
+  z-index: 100;
+  width: min(1100px, calc(100% - 2rem));
+  margin: 0.9rem auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.95rem 1.3rem;
+  background: rgba(14, 20, 32, 0.72);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--surface-border);
+  border-radius: 1rem;
+  box-shadow: 0 12px 40px rgba(6, 11, 20, 0.45);
+  box-sizing: border-box;
+  font-family: "Press Start 2P", cursive;
+}
+
+.navbar-brand {
+  flex-shrink: 0;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.7rem;
+}
+
+.navbar-logo:hover {
+  color: #646cff;
+}
+
+.navbar-flag {
+  width: 28px;
+  height: 28px;
+}
+
+.navbar-title {
+  letter-spacing: 0.05em;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+  flex: 1;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.navbar-link {
+  font-size: 0.58rem;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.82;
+  transition: opacity 0.2s;
+}
+
+.navbar-link:hover {
+  opacity: 1;
+  color: #646cff;
+}
+
+.navbar-auth {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-loading {
+  font-size: 0.7rem;
+  opacity: 0.5;
+}
+
+.navbar-warning {
+  font-size: 0.5rem;
+  color: var(--text-muted);
+  opacity: 0.9;
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbar-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #646cff;
+}
+
+.navbar-username {
+  font-size: 0.55rem;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+.navbar-btn {
+  font-size: 0.55rem !important;
+  padding: 0.5rem 1rem !important;
+  box-shadow: none !important;
+  border-radius: 999px;
+}
+
+/* ─── Home page ───────────────────────────────────────────── */
+.home-page {
+  width: min(1100px, calc(100% - 2rem));
+  margin: 1.5rem auto 2.5rem;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.hero-panel,
+.auth-panel {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: 1.2rem;
+  padding: 1.8rem;
+  box-shadow: 0 18px 50px rgba(5, 10, 18, 0.4);
+}
+
+.hero-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2rem;
+  min-height: 420px;
+}
+
+.hero-kicker {
+  margin: 0;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.hero-title {
+  margin: 0;
+}
+
+.hero-subtitle {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  max-width: 34ch;
+}
+
+.primary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.7rem;
+  font-size: 0.62rem;
+  color: #031e34;
+  background: var(--brand);
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.primary-link:hover {
+  color: #031e34;
+  background: var(--brand-strong);
+  transform: translateY(-2px);
+}
+
+.auth-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-action-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* ─── Login page ─────────────────────────────────────────── */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 56px);
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.login-card {
+  background-color: #262a33;
+  border-radius: 20px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 3rem 2.5rem;
+  max-width: 420px;
+  width: 100%;
+  animation: fadeInScale 0.6s ease-out forwards;
+}
+
 @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
+  .login-card {
     background-color: #f9f9f9;
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.12),
+      0 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.login-logo {
+  display: flex;
+  justify-content: center;
+}
+
+.login-flag {
+  width: 56px;
+  height: 56px;
+}
+
+.login-title {
+  font-size: 1.4rem;
+  text-align: center;
+  margin: 0;
+}
+
+.login-subtitle {
+  font-size: 0.7rem;
+  text-align: center;
+  opacity: 0.7;
+  line-height: 1.8;
+  max-width: 280px;
+  margin: 0;
+}
+
+.login-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.login-footer {
+  font-size: 0.5rem;
+  opacity: 0.4;
+  text-align: center;
+  margin: 0;
+}
+
+@media (max-width: 980px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-panel {
+    min-height: unset;
+  }
+
+  .navbar {
+    width: calc(100% - 1rem);
+    padding: 0.85rem 0.9rem;
+  }
+
+  .navbar-username {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    flex-wrap: wrap;
+    row-gap: 0.8rem;
+  }
+
+  .navbar-links {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  .hero-panel,
+  .auth-panel {
+    padding: 1.2rem;
+    border-radius: 0.95rem;
+  }
+
+  .hero-subtitle {
+    max-width: none;
+  }
+
+  .button {
+    width: 100%;
+    text-align: center;
   }
 }

@@ -1,3 +1,13 @@
+// jwks-rsa pulls in `jose` which is pure-ESM; mock the whole module so
+// ts-jest (CommonJS) can import JwtStrategy without hitting ESM syntax.
+jest.mock("jwks-rsa", () => ({
+  __esModule: true,
+  default: {
+    passportJwtSecret: jest.fn(() => jest.fn()),
+  },
+  passportJwtSecret: jest.fn(() => jest.fn()),
+}));
+
 import { JwtStrategy } from "./jwt.strategy";
 import { ConfigService } from "@nestjs/config";
 

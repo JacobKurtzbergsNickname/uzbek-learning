@@ -1,7 +1,15 @@
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { auth0 } from "./lib/auth0";
+import { getAuth0ConfigStatus } from "./lib/auth0-config";
 
 export async function middleware(request: NextRequest) {
+  const { isConfigured } = getAuth0ConfigStatus();
+
+  if (!isConfigured) {
+    return NextResponse.next();
+  }
+
   return await auth0.middleware(request);
 }
 

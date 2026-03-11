@@ -31,6 +31,7 @@ export class GlobalExceptionLogger implements ExceptionFilter {
 import { Module } from "@nestjs/common";
 import { WordsModule } from "./words/words.module";
 import { UsersModule } from "./users/users.module";
+import { AuthModule } from "./auth/auth.module";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { GraphQLModule } from "@nestjs/graphql";
@@ -52,6 +53,7 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
       installSubscriptionHandlers: true,
       context: ({ req }: { req: unknown }) => ({ req }),
     }),
+    AuthModule,
     WordsModule,
     UsersModule,
   ],

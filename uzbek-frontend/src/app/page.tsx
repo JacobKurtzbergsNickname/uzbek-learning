@@ -1,20 +1,54 @@
-
-import Vocabulary from "@/components/Vocabulary/Vocabulary";
+import { auth0 } from "@/lib/auth0";
+import { getAuth0ConfigStatus } from "@/lib/auth0-config";
 import Link from "next/link";
+import Profile from "@/components/Profile";
+import LoginButton from "@/components/LoginButton";
+import LogoutButton from "@/components/LogoutButton";
 
-export default function Home() {
-    return (
-    <>
-      <h1 className="mb-10">Learning Uzbek</h1>
+export default async function Home() {
+  const auth0Config = getAuth0ConfigStatus();
+  const session = auth0Config.isConfigured ? await auth0.getSession() : null;
+  const user = session?.user;
 
-      <p className="text-2xl mb-5">Test your Uzbek vocabulary skills!</p>
-      <div className="mt-8">
-        <Link href="/timed-test">
-          <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+  return (
+    <main className="home-page">
+      <section className="home-grid">
+        <div className="hero-panel">
+          <p className="hero-kicker">Vocabulary Practice</p>
+          <h1 className="hero-title">Learning Uzbek</h1>
+          <p className="hero-subtitle">
+            Test your Uzbek vocabulary skills with a focused timed challenge.
+          </p>
+          <Link href="/timed-test" className="primary-link">
             Go to Timed Vocabulary Test
-          </button>
-        </Link>
-      </div>
-    </>
+          </Link>
+        </div>
+
+        <div className="auth-panel">
+          {!auth0Config.isConfigured ? (
+            <div className="action-card home-action-card">
+              <p className="action-text">
+                Auth0 is not configured yet. Update your frontend .env.local
+                values to enable login.
+              </p>
+            </div>
+          ) : user ? (
+            <div className="logged-in-section">
+              <p className="logged-in-message">Successfully logged in!</p>
+              <Profile />
+              <LogoutButton />
+            </div>
+          ) : (
+            <div className="action-card home-action-card">
+              <p className="action-text">
+                Log in to track your vocabulary progress and keep your learning
+                streak alive.
+              </p>
+              <LoginButton />
+            </div>
+          )}
+        </div>
+      </section>
+    </main>
   );
 }

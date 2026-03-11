@@ -17,6 +17,7 @@ import { WordsService } from "./words.service";
 import { CreateWordDto } from "./dto/create-word.dto";
 import { QueryWordsDto } from "./dto/query-words.dto";
 import { UpdateWordDto } from "./dto/update-word.dto";
+import { Public } from "../auth/public.decorator";
 
 @UseGuards(JwtAuthGuard)
 @Controller("words")
@@ -24,6 +25,7 @@ export class WordsController {
   constructor(private readonly words: WordsService) {}
   private readonly logger = new Logger(WordsController.name);
 
+  @Public()
   @Get()
   list(
     @Query() q: QueryWordsDto,
@@ -36,6 +38,7 @@ export class WordsController {
     return this.words.findAll(q.language);
   }
 
+  @Public()
   @Get(":id")
   get(@Param("id") id: string) {
     return this.words.findOne(id);

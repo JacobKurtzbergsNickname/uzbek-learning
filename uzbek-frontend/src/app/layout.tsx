@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Auth0Provider } from "@auth0/nextjs-auth0/client";
+import Navbar from "@/components/Navbar";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -19,6 +20,7 @@ export default function RootLayout({
       </head>
       <body>
         <Auth0Provider>
+          <Navbar />
           <div id="root">{children}</div>
         </Auth0Provider>
       </body>
