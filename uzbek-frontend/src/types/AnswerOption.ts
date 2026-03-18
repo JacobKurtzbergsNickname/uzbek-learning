@@ -1,5 +1,5 @@
 export type AnswerOptionDTO = {
-    word: string;
-    isCorrect: boolean;
-    isSelected: boolean;
-}
+  word: string;
+  isCorrect: boolean;
+  isSelected: boolean;
+};

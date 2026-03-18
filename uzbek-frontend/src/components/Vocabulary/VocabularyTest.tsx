@@ -25,9 +25,11 @@ function selectRandomWords(words: Word[], correctWord?: Word): Word[] {
 
 function selectAnswer(
   answerOptions: AnswerOptionDTO[],
-  answer: AnswerOptionDTO
+  answer: AnswerOptionDTO,
 ): AnswerOptionDTO[] {
-  const index = answerOptions.findIndex((w: AnswerOptionDTO) => w.word === answer.word);
+  const index = answerOptions.findIndex(
+    (w: AnswerOptionDTO) => w.word === answer.word,
+  );
   const selectedAnswer = {
     ...answerOptions[index],
     isSelected: true,
@@ -51,10 +53,14 @@ function selectAnswer(
  */
 
 export function VocabularyTest({ correctWord }: VocabTestProps): JSX.Element {
-  const { words, setCorrectWord, setIsAnswerSelected } = useContext(VocabularyContext);
+  const { words, setCorrectWord, setIsAnswerSelected } =
+    useContext(VocabularyContext);
   const [answerOptions, setAnswerOptions] = useState<AnswerOptionDTO[]>([]);
 
-  const wrongWords = useMemo(() => selectRandomWords(words, correctWord), [words, correctWord]);
+  const wrongWords = useMemo(
+    () => selectRandomWords(words, correctWord),
+    [words, correctWord],
+  );
 
   // Update the correct word in the context when it changes
   useEffect(() => {
@@ -87,7 +93,9 @@ export function VocabularyTest({ correctWord }: VocabTestProps): JSX.Element {
       <Translation>{correctWord.translation}</Translation>
       <section className="grid grid-cols-2 gap-1 justify-center items-center w-fit mx-auto mt-8">
         {answerOptions.map((w: AnswerOptionDTO, index: number) => {
-          return <AnswerOption answer={w} key={index} index={index} check={check} />;
+          return (
+            <AnswerOption answer={w} key={index} index={index} check={check} />
+          );
         })}
       </section>
     </section>
