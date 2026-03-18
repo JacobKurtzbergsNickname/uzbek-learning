@@ -22,7 +22,9 @@ const localWords: Words = [
 ];
 
 // Create the provider component
-export const VocabularyProvider: React.FC<ProviderProperties> = ({ children }) => {
+export const VocabularyProvider: React.FC<ProviderProperties> = ({
+  children,
+}) => {
   const words: Words = useLocalStorage<Words>("words", localWords)[0];
   const [correctWord, setCorrectWord] = useState<Word>(emptyWord());
   const [current, setCurrent] = useState<number>(0);

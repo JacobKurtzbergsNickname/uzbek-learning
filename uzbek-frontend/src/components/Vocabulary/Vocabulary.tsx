@@ -6,17 +6,17 @@ import { VocabularyProvider } from "./VocabularyProvider";
 import TimedVocabularyTest from "./TimedVocabularyTest";
 
 function Vocabulary(): JSX.Element {
-    return (
-        <section>
-            <VocabularyProvider>
-                <VocabularyContext.Consumer>
-                    {({ words }) => (
-                        <TimedVocabularyTest words={words} onComplete={() => {}} />
-                    )}
-                </VocabularyContext.Consumer>
-            </VocabularyProvider>
-        </section>
-    )
+  return (
+    <section>
+      <VocabularyProvider>
+        <VocabularyContext.Consumer>
+          {({ words }) => (
+            <TimedVocabularyTest words={words} onComplete={() => {}} />
+          )}
+        </VocabularyContext.Consumer>
+      </VocabularyProvider>
+    </section>
+  );
 }
 
 export default Vocabulary;

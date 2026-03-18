@@ -2,6 +2,7 @@ import { APP_GUARD, APP_FILTER } from "@nestjs/core";
 import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 import { ExceptionFilter, Catch, ArgumentsHost, Logger } from "@nestjs/common";
 import { HttpException } from "@nestjs/common";
+import type { Response } from "express";
 
 @Catch()
 export class GlobalExceptionLogger implements ExceptionFilter {
@@ -10,20 +11,21 @@ export class GlobalExceptionLogger implements ExceptionFilter {
     this.logger.error("Unhandled exception:", exception);
     if (exception instanceof HttpException) {
       const ctx = host.switchToHttp();
-      const response = ctx.getResponse();
+      const response = ctx.getResponse<Response>();
       const status = exception.getStatus();
+      const body = exception.getResponse() as Record<string, string>;
       response.status(status).json({
         statusCode: status,
         message: exception.message,
-        error: exception["response"]?.error || exception.name,
+        error: body?.error ?? exception.name,
       });
     } else {
       const ctx = host.switchToHttp();
-      const response = ctx.getResponse();
+      const response = ctx.getResponse<Response>();
       response.status(500).json({
         statusCode: 500,
         message: "Internal server error",
-        error: (exception as any)?.message || "Unknown error",
+        error: exception instanceof Error ? exception.message : "Unknown error",
       });
     }
   }

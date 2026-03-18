@@ -65,7 +65,7 @@ function generateOptions(words: Word[], current: number): AnswerOptionDTO[] {
 function markAnswers(
   options: AnswerOptionDTO[],
   correctWord: string,
-  selected: string | null
+  selected: string | null,
 ): AnswerOptionDTO[] {
   return options.map((opt) => {
     if (selected === null) {
@@ -102,7 +102,10 @@ function markAnswers(
  * @param action - Action to transition state.
  * @returns New quiz state after transition.
  */
-function quizReducer(state: QuizState, action: QuizAction & { words: Word[] }): QuizState {
+function quizReducer(
+  state: QuizState,
+  action: QuizAction & { words: Word[] },
+): QuizState {
   const { words } = action;
   const word = words[state.current];
   switch (action.type) {
@@ -133,7 +136,11 @@ function quizReducer(state: QuizState, action: QuizAction & { words: Word[] }): 
         ...state,
         phase: "showingAnswer",
         selected: action.answer,
-        answerOptions: markAnswers(state.answerOptions, word.word, action.answer),
+        answerOptions: markAnswers(
+          state.answerOptions,
+          word.word,
+          action.answer,
+        ),
         results: [...state.results, { word, selected: action.answer, correct }],
       };
     case "SHOW_ANSWER":
@@ -173,7 +180,10 @@ export function useTimedQuizMachine(words: Word[]) {
     answerOptions: generateOptions(words, 0),
     results: [],
   };
-  const [state, dispatch] = useReducer((s, a) => quizReducer(s, { ...a, words }), initialState);
+  const [state, dispatch] = useReducer(
+    (s, a) => quizReducer(s, { ...a, words }),
+    initialState,
+  );
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Orchestrate timer and phase transitions
@@ -203,7 +213,8 @@ export function useTimedQuizMachine(words: Word[]) {
   }, [state.phase]);
 
   // Action dispatchers
-  const selectAnswer = (answer: string) => dispatch({ type: "SELECT_ANSWER", answer });
+  const selectAnswer = (answer: string) =>
+    dispatch({ type: "SELECT_ANSWER", answer });
   const restart = () => dispatch({ type: "START_QUESTION" });
 
   return {

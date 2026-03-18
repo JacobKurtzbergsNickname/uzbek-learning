@@ -4,9 +4,9 @@ import { ChainableArray } from "./chainable-functions";
 /**
  * A chainable array implementation that supports method chaining
  * with proper TypeScript typing across different data types
- * 
+ *
  * Example usage:
- * const options = 
+ * const options =
  *    WordUtils
  *      .composeTestableWords(correctWord, wrongWords)
  *      .toAnswerOptions()
@@ -17,11 +17,13 @@ export class WordFunctionsArray<T> extends ChainableArray<T> {
    * Convert string array to answer options
    * Only available when T is string
    */
-  toAnswerOptions(this: WordFunctionsArray<string>): WordFunctionsArray<AnswerOptionDTO> {
+  toAnswerOptions(
+    this: WordFunctionsArray<string>,
+  ): WordFunctionsArray<AnswerOptionDTO> {
     const options = WordUtils.toAnswerOptions([...this]);
     return new WordFunctionsArray<AnswerOptionDTO>(options);
   }
-  
+
   /**
    * Shuffle the array elements
    */
@@ -32,7 +34,10 @@ export class WordFunctionsArray<T> extends ChainableArray<T> {
 }
 
 interface IWordUtils {
-  composeTestableWords: (correctWord: Word, wrongWords: Word[]) => WordFunctionsArray<string>;
+  composeTestableWords: (
+    correctWord: Word,
+    wrongWords: Word[],
+  ) => WordFunctionsArray<string>;
   toAnswerOptions: (words: string[]) => AnswerOptionDTO[];
   shuffle: <T>(array: T[]) => T[];
   generateTestOptions: (words: Word[], current: number) => AnswerOptionDTO[];
@@ -45,10 +50,13 @@ export const WordUtils: IWordUtils = {
   /**
    * Creates a chainable array of testable words from correct and wrong options
    */
-  composeTestableWords(correctWord: Word, wrongWords: Word[]): WordFunctionsArray<string> {
+  composeTestableWords(
+    correctWord: Word,
+    wrongWords: Word[],
+  ): WordFunctionsArray<string> {
     return new WordFunctionsArray<string>([
       correctWord.word,
-      ...wrongWords.map((w: Word) => w.word)
+      ...wrongWords.map((w: Word) => w.word),
     ]);
   },
 
@@ -62,7 +70,7 @@ export const WordUtils: IWordUtils = {
       isSelected: false,
     }));
   },
-  
+
   /**
    * Shuffles the elements of an array randomly
    */
@@ -76,14 +84,14 @@ export const WordUtils: IWordUtils = {
   },
 
   generateTestOptions(words: Word[], current: number): AnswerOptionDTO[] {
-      const word = words[current];
-      if (!word) return [];
-      const wrongWords = words.filter((w) => w.word !== word.word);
-      const shuffledWrong = wrongWords.length > 3
+    const word = words[current];
+    if (!word) return [];
+    const wrongWords = words.filter((w) => w.word !== word.word);
+    const shuffledWrong =
+      wrongWords.length > 3
         ? [...wrongWords].sort(() => Math.random() - 0.5).slice(0, 3)
         : wrongWords;
-      const options = [word, ...shuffledWrong].map((w) => w.word);
-      return WordUtils.toAnswerOptions(options).sort(() => Math.random() - 0.5);
-  }
+    const options = [word, ...shuffledWrong].map((w) => w.word);
+    return WordUtils.toAnswerOptions(options).sort(() => Math.random() - 0.5);
+  },
 };
-

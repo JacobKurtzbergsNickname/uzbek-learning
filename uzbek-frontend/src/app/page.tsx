@@ -1,9 +1,8 @@
-
 import Vocabulary from "@/components/Vocabulary/Vocabulary";
 import Link from "next/link";
 
 export default function Home() {
-    return (
+  return (
     <>
       <h1 className="mb-10">Learning Uzbek</h1>
 

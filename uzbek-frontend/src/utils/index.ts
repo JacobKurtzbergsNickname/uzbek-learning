@@ -1,2 +1,2 @@
-export * from "./chainable-functions"
-export * from "./word-utilities"
+export * from "./chainable-functions";
+export * from "./word-utilities";
