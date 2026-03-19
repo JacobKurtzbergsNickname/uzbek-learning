@@ -1,6 +1,6 @@
 import { IsInt, IsOptional, IsIn, Max, Min } from "class-validator";
 import { Type } from "class-transformer";
-import { WordType } from "../../schemas/srs/user-word-progress.schema";
+import type { WordType } from "../../schemas/srs/user-word-progress.schema";
 
 export class QueryDueDto {
   @IsOptional()

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 import { Test, TestingModule } from "@nestjs/testing";
 import { getModelToken } from "@nestjs/mongoose";
 import { NotFoundException } from "@nestjs/common";
@@ -10,7 +11,9 @@ import { DEFAULT_EASINESS_FACTOR, LEARNED_THRESHOLD } from "./sm2";
 const USER_ID = "auth0|test-user";
 const WORD_ID = "word-uuid-1234";
 
-function makeProgress(overrides: Partial<UserWordProgress> = {}): UserWordProgress {
+function makeProgress(
+  overrides: Partial<UserWordProgress> = {},
+): UserWordProgress {
   return {
     id: "progress-uuid",
     userId: USER_ID,
@@ -48,7 +51,9 @@ function makeDocumentMock(initial: Partial<UserWordProgress> = {}) {
   });
 }
 
-function buildMockModel(existingDoc: ReturnType<typeof makeDocumentMock> | null = null) {
+function buildMockModel(
+  existingDoc: ReturnType<typeof makeDocumentMock> | null = null,
+) {
   const mockModel = jest.fn().mockImplementation(() => makeDocumentMock());
 
   mockModel.findOne = jest.fn().mockReturnValue({
@@ -224,14 +229,16 @@ describe("SrsService", () => {
 
       await service.getDue(USER_ID, { limit: 10 });
 
-      expect(mockModel.find).toHaveBeenCalledWith(
-        expect.objectContaining({
-          userId: USER_ID,
-          $or: expect.arrayContaining([
-            { nextReview: null },
-            { nextReview: expect.objectContaining({ $lte: expect.any(Date) }) },
-          ]),
-        }),
+      const findArg = (mockModel.find as jest.Mock).mock.calls[0][0] as {
+        userId: string;
+        $or: Array<Record<string, unknown>>;
+      };
+      expect(findArg.userId).toBe(USER_ID);
+      expect(findArg.$or).toEqual(
+        expect.arrayContaining([
+          { nextReview: null },
+          { nextReview: expect.objectContaining({ $lte: expect.any(Date) }) },
+        ]) as unknown[],
       );
     });
 
@@ -250,8 +257,9 @@ describe("SrsService", () => {
 
       await service.getDue(USER_ID, {});
 
-      const chainMock = mockModel.find.mock.results[0].value;
-      expect(chainMock.limit).toHaveBeenCalledWith(20);
+      const chainMock = (mockModel.find as jest.Mock).mock
+        .results[0] as jest.MockResult<{ limit: jest.Mock }>;
+      expect(chainMock.value.limit).toHaveBeenCalledWith(20);
     });
 
     it("respects a custom limit", async () => {
@@ -259,8 +267,9 @@ describe("SrsService", () => {
 
       await service.getDue(USER_ID, { limit: 7 });
 
-      const chainMock = mockModel.find.mock.results[0].value;
-      expect(chainMock.limit).toHaveBeenCalledWith(7);
+      const chainMock = (mockModel.find as jest.Mock).mock
+        .results[0] as jest.MockResult<{ limit: jest.Mock }>;
+      expect(chainMock.value.limit).toHaveBeenCalledWith(7);
     });
 
     it("does NOT include wordType in query when not provided", async () => {
@@ -268,9 +277,11 @@ describe("SrsService", () => {
 
       await service.getDue(USER_ID, { limit: 10 });
 
-      expect(mockModel.find).toHaveBeenCalledWith(
-        expect.not.objectContaining({ wordType: expect.anything() }),
-      );
+      const findArg = (mockModel.find as jest.Mock).mock.calls[0][0] as Record<
+        string,
+        unknown
+      >;
+      expect(findArg).not.toHaveProperty("wordType");
     });
   });
 
@@ -311,7 +322,10 @@ describe("SrsService", () => {
       const module: TestingModule = await Test.createTestingModule({
         providers: [
           SrsService,
-          { provide: getModelToken(UserWordProgress.name), useValue: mockModel },
+          {
+            provide: getModelToken(UserWordProgress.name),
+            useValue: mockModel,
+          },
         ],
       }).compile();
       service = module.get<SrsService>(SrsService);
@@ -330,7 +344,10 @@ describe("SrsService", () => {
       const module: TestingModule = await Test.createTestingModule({
         providers: [
           SrsService,
-          { provide: getModelToken(UserWordProgress.name), useValue: mockModel },
+          {
+            provide: getModelToken(UserWordProgress.name),
+            useValue: mockModel,
+          },
         ],
       }).compile();
       service = module.get<SrsService>(SrsService);

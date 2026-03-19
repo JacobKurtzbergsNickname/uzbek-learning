@@ -1,5 +1,5 @@
 import { IsIn, IsInt, IsString, Max, Min, MinLength } from "class-validator";
-import { WordType } from "../../schemas/srs/user-word-progress.schema";
+import type { WordType } from "../../schemas/srs/user-word-progress.schema";
 
 export class ReviewWordDto {
   @IsString()

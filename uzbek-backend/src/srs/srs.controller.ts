@@ -1,17 +1,9 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Query,
-  Req,
-} from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query, Req } from "@nestjs/common";
 import { Request } from "express";
 import { SrsService } from "./srs.service";
 import { ReviewWordDto } from "./dto/review-word.dto";
 import { QueryDueDto } from "./dto/query-due.dto";
-import { WordType } from "../schemas/srs/user-word-progress.schema";
+import type { WordType } from "../schemas/srs/user-word-progress.schema";
 
 interface AuthenticatedRequest extends Request {
   user: { userId: string; [key: string]: unknown };
