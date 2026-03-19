@@ -73,8 +73,8 @@ describe("applyReview() — interval scheduling", () => {
 
   it("multiplies interval by EF on third+ successful review", () => {
     const s1 = applyReview(fresh(), 5, NOW); // interval=1, EF slightly up
-    const s2 = applyReview(s1, 5, NOW);       // interval=6
-    const s3 = applyReview(s2, 5, NOW);       // interval = round(6 * EF)
+    const s2 = applyReview(s1, 5, NOW); // interval=6
+    const s3 = applyReview(s2, 5, NOW); // interval = round(6 * EF)
     expect(s3.interval).toBe(Math.round(6 * s2.easinessFactor));
     expect(s3.repetitions).toBe(3);
   });

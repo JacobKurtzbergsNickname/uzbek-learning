@@ -16,7 +16,9 @@ function makeRequest(userId = USER_ID) {
   };
 }
 
-function makeProgress(overrides: Partial<UserWordProgress> = {}): UserWordProgress {
+function makeProgress(
+  overrides: Partial<UserWordProgress> = {},
+): UserWordProgress {
   return {
     id: "progress-uuid",
     userId: USER_ID,

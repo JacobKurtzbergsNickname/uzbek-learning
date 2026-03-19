@@ -52,7 +52,9 @@ export function applyReview(
   now: Date = new Date(),
 ): Sm2Result {
   if (quality < 0 || quality > 5 || !Number.isInteger(quality)) {
-    throw new RangeError(`quality must be an integer in [0, 5], got ${quality}`);
+    throw new RangeError(
+      `quality must be an integer in [0, 5], got ${quality}`,
+    );
   }
 
   let { interval, repetitions, easinessFactor } = state;

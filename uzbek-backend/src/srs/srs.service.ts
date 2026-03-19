@@ -27,16 +27,11 @@ export class SrsService {
    * @param dto     Review payload (wordId, wordType, quality 0–5).
    * @returns       Updated progress record.
    */
-  async review(
-    userId: string,
-    dto: ReviewWordDto,
-  ): Promise<UserWordProgress> {
+  async review(userId: string, dto: ReviewWordDto): Promise<UserWordProgress> {
     const { wordId, wordType, quality } = dto;
 
     // Load or create the progress record
-    let progress = await this.progressModel
-      .findOne({ userId, wordId })
-      .exec();
+    let progress = await this.progressModel.findOne({ userId, wordId }).exec();
 
     const now = new Date();
 

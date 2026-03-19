@@ -1,9 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { v4 as uuidv4 } from "uuid";
-import {
-  DEFAULT_EASINESS_FACTOR,
-  LEARNED_THRESHOLD,
-} from "../../srs/sm2";
+import { DEFAULT_EASINESS_FACTOR, LEARNED_THRESHOLD } from "../../srs/sm2";
 
 export type UserWordProgressDocument = UserWordProgress & Document;
 
@@ -90,8 +87,7 @@ export class UserWordProgress {
   updatedAt: Date;
 }
 
-const UserWordProgressSchema =
-  SchemaFactory.createForClass(UserWordProgress);
+const UserWordProgressSchema = SchemaFactory.createForClass(UserWordProgress);
 
 // Compound unique index: one progress record per user per tracked item
 UserWordProgressSchema.index({ userId: 1, wordId: 1 }, { unique: true });
